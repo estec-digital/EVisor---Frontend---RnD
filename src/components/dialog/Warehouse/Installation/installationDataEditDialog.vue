@@ -51,19 +51,18 @@
         <el-input v-model="formData.cabinet_no" :disabled="true" :readonly="true" />
       </el-form-item>
 
-      <el-form-item label="dt" prop="dt" v-show="hideFields">
-        <el-input v-model="formData.dt" :disabled="true" :readonly="true" />
+      <el-form-item label="dt" prop="dt">
+        <el-input v-model="formData.dt" :disabled="false" :readonly="false" />
       </el-form-item>
 
       <el-form-item
-        label="higher_level_function"
-        prop="higher_level_function"
-        v-show="hideFields"
+        label="Higher Level Function"
+        prop="higher_lever_function"
       >
         <el-input
-          v-model="formData.higher_level_function"
-          :disabled="true"
-          :readonly="true"
+          v-model="formData.higher_lever_function"
+          :disabled="false"
+          :readonly="false"
         />
       </el-form-item>
     </el-form>
@@ -113,6 +112,7 @@ export default {
           higher_level_function: "",
           cabinet_no: "",
           dt: "",
+          higher_level_function: "",
         };
       }
 
@@ -125,6 +125,7 @@ export default {
 
     const internalDialogVisible = ref(props.modelValue);
     const formData = ref(initializeFormData(props.itemToEdit));
+    console.log('formData:', formData);
     const taskForm = ref(null);
     const hideFields = ref(false);
 

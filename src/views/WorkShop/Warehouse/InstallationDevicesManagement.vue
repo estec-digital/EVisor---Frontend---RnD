@@ -55,98 +55,245 @@
             {{ langStore.t("deleteSelectedButton") }} ({{ selectedItems.length }})
           </el-button>
         </div>
+        <!-- <div class="action-filter-container">
+          <div class="filter-controls" style="margin-bottom: 10px;">
+            <el-popover placement="bottom" title="Cấu hình bộ lọc" :width="300" trigger="click">
+              <template #reference>
+                <el-button :icon="Filter" type="primary" plain />
+              </template>
+              <el-checkbox-group v-model="activeFilters">
+                <el-checkbox label="productCode" value="productCode">Mã sản phẩm</el-checkbox>
+                <el-checkbox label="location" value="location">Vị trí</el-checkbox>
+                <el-checkbox label="md" value="md">MD</el-checkbox>
+                <el-checkbox label="projectCode" value="projectCode">Mã dự án</el-checkbox>
+                <el-checkbox label="status" value="status">Trạng thái</el-checkbox>
+                <el-checkbox label="higherLevel" value="higherLevel">Higher Level</el-checkbox>
+              </el-checkbox-group>
+            </el-popover>
+          </div>
+          <div class="action-filter">
+            <el-select
+              v-if="activeFilters.includes('productCode')"
+              v-model="selectedProductCode"
+              :placeholder="langStore.t('filterByProductCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              filterable
+              remote
+              :remote-method="remoteSearchProductCode"
+              :loading="loadingProductCode"
+            >
+              <el-option
+                v-for="productCode in productCodeOptions"
+                :key="productCode.id"
+                :label="productCode.name"
+                :value="productCode.id"
+              />
+            </el-select>
 
+            <el-select
+              v-if="activeFilters.includes('location')"
+              v-model="selectedLocationCode"
+              :placeholder="langStore.t('filterByLocationCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchLocation"
+              :loading="loadingLocaction"
+            >
+              <el-option
+                v-for="locationItem in locationOptions"
+                :key="locationItem.id"
+                :label="locationItem.name"
+                :value="locationItem.id"
+              />
+            </el-select>
+
+            <el-select
+              v-if="activeFilters.includes('md')"
+              v-model="selectedMd"
+              :placeholder="langStore.t('filterByMDPlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchMD"
+              :loading="loadingMD"
+            >
+              <el-option
+                v-for="mdVal in mdOptions"
+                :key="mdVal.id"
+                :label="mdVal.name"
+                :value="mdVal.id"
+              />
+            </el-select>
+
+            <el-select
+              v-if="activeFilters.includes('projectCode')"
+              v-model="selectedProjectCode"
+              :placeholder="langStore.t('filterByProjectCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchProjectCode"
+              :loading="loadingProjectCode"
+            >
+              <el-option
+                v-for="projectCodeVal in projectCodeOptions"
+                :key="projectCodeVal.id"
+                :label="projectCodeVal.name"
+                :value="projectCodeVal.id"
+              />
+            </el-select>
+
+            <el-select
+              v-if="activeFilters.includes('status')"
+              v-model="selectedStatus"
+              :placeholder="langStore.t('filterByStatusNumberPlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+            >
+              <el-option
+                v-for="statusVal in uniqueStatus"
+                :key="statusVal.id"
+                :label="getInstallationStatusName(statusVal.id)"
+                :value="statusVal.id"
+              />
+            </el-select>
+
+            <el-select
+              v-if="activeFilters.includes('higherLevel')"
+              v-model="selectedHigherLevel"
+              placeholder="Filter by higher level"
+              filterable
+              remote
+              clearable
+              :remote-method="remoteSearchHigherLF"
+              :loading="loadingHigherLF"
+            >
+              <el-option 
+                v-for="higherLevel in uniqueHigherLF"
+                :key="higherLevel.id"
+                :label="higherLevel.name"
+                :value="higherLevel.id"
+              />
+            </el-select>
+          </div>
+        </div> -->
         <div class="action-filter">
-          <el-select
-            v-model="selectedProductCode"
-            :placeholder="langStore.t('filterByProductCodePlaceholder')"
-            clearable
-            @change="applyFilters"
-            filterable
-            remote
-            :remote-method="remoteSearchProductCode"
-            :loading="loadingProductCode"
-          >
-            <el-option
-              v-for="productCode in productCodeOptions"
-              :key="productCode.id"
-              :label="productCode.name"
-              :value="productCode.id"
-            />
-          </el-select>
+            <el-select
+              v-model="selectedProductCode"
+              :placeholder="langStore.t('filterByProductCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              filterable
+              remote
+              :remote-method="remoteSearchProductCode"
+              :loading="loadingProductCode"
+            >
+              <el-option
+                v-for="productCode in productCodeOptions"
+                :key="productCode.id"
+                :label="productCode.name"
+                :value="productCode.id"
+              />
+            </el-select>
 
-          <el-select
-            v-model="selectedLocationCode"
-            :placeholder="langStore.t('filterByLocationCodePlaceholder')"
-            clearable
-            @change="applyFilters"
-            class="barcode-select"
-            filterable
-            remote
-            :remote-method="remoteSearchLocation"
-            :loading="loadingLocaction"
-          >
-            <el-option
-              v-for="locationItem in locationOptions"
-              :key="locationItem.id"
-              :label="locationItem.name"
-              :value="locationItem.id"
-            />
-          </el-select>
+            <el-select
+              v-model="selectedLocationCode"
+              :placeholder="langStore.t('filterByLocationCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchLocation"
+              :loading="loadingLocaction"
+            >
+              <el-option
+                v-for="locationItem in locationOptions"
+                :key="locationItem.id"
+                :label="locationItem.name"
+                :value="locationItem.id"
+              />
+            </el-select>
 
-          <el-select
-            v-model="selectedMd"
-            :placeholder="langStore.t('filterByMDPlaceholder')"
-            clearable
-            @change="applyFilters"
-            class="barcode-select"
-            filterable
-            remote
-            :remote-method="remoteSearchMD"
-            :loading="loadingMD"
-          >
-            <el-option
-              v-for="mdVal in mdOptions"
-              :key="mdVal.id"
-              :label="mdVal.name"
-              :value="mdVal.id"
-            />
-          </el-select>
+            <el-select
+              v-model="selectedMd"
+              :placeholder="langStore.t('filterByMDPlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchMD"
+              :loading="loadingMD"
+            >
+              <el-option
+                v-for="mdVal in mdOptions"
+                :key="mdVal.id"
+                :label="mdVal.name"
+                :value="mdVal.id"
+              />
+            </el-select>
 
-          <el-select
-            v-model="selectedProjectCode"
-            :placeholder="langStore.t('filterByProjectCodePlaceholder')"
-            clearable
-            @change="applyFilters"
-            class="barcode-select"
-            filterable
-            remote
-            :remote-method="remoteSearchProjectCode"
-            :loading="loadingProjectCode"
-          >
-            <el-option
-              v-for="projectCodeVal in projectCodeOptions"
-              :key="projectCodeVal.id"
-              :label="projectCodeVal.name"
-              :value="projectCodeVal.id"
-            />
-          </el-select>
+            <el-select
+              v-model="selectedProjectCode"
+              :placeholder="langStore.t('filterByProjectCodePlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+              filterable
+              remote
+              :remote-method="remoteSearchProjectCode"
+              :loading="loadingProjectCode"
+            >
+              <el-option
+                v-for="projectCodeVal in projectCodeOptions"
+                :key="projectCodeVal.id"
+                :label="projectCodeVal.name"
+                :value="projectCodeVal.id"
+              />
+            </el-select>
 
-          <el-select
-            v-model="selectedStatus"
-            :placeholder="langStore.t('filterByStatusNumberPlaceholder')"
-            clearable
-            @change="applyFilters"
-            class="barcode-select"
-          >
-            <el-option
-              v-for="statusVal in uniqueStatus"
-              :key="statusVal.id"
-              :label="getInstallationStatusName(statusVal.id)"
-              :value="statusVal.id"
-            />
-          </el-select>
-        </div>
+            <el-select
+              v-model="selectedStatus"
+              :placeholder="langStore.t('filterByStatusNumberPlaceholder')"
+              clearable
+              @change="applyFilters"
+              class="barcode-select"
+            >
+              <el-option
+                v-for="statusVal in uniqueStatus"
+                :key="statusVal.id"
+                :label="getInstallationStatusName(statusVal.id)"
+                :value="statusVal.id"
+              />
+            </el-select>
+
+            <el-select
+              v-model="selectedHigherLevel"
+              placeholder="Filter by higher level"
+              filterable
+              remote
+              clearable
+              :remote-method="remoteSearchHigherLF"
+              :loading="loadingHigherLF"
+            >
+              <el-option 
+                v-for="higherLevel in uniqueHigherLF"
+                :key="higherLevel.id"
+                :label="higherLevel.name"
+                :value="higherLevel.id"
+              />
+            </el-select>
+          </div>
       </div>
 
       <el-tabs v-model="activeTab" class="export-data-tabs" type="border-card">
@@ -292,6 +439,7 @@ import {
   Delete,
   Download,
   EditPen,
+  Filter,
   Plus,
   Printer,
   Refresh,
@@ -314,6 +462,7 @@ export default {
     Refresh,
     Delete,
     Plus,
+    Filter,
     DetailPopup,
     WarehouseExportUpload,
     DownloadFilterDialog,
@@ -351,6 +500,10 @@ export default {
       remoteSearchProductCode,
       remoteSearchProjectCode,
       remoteSearchMD,
+      loadingHigherLF,
+      uniqueHigherLF,
+      remoteSearchHigherLF,
+      selectedHigherLevel,
     } = useWarehouseInstallationPartManagement();
 
     const {
@@ -387,6 +540,18 @@ export default {
       selectedItem,
       isDetailVisible
     );
+
+    const activeFilters = ref(['productCode', 'projectCode']);
+
+    const clearAllFilters = () => {
+      selectedProductCode.value = null;
+      selectedLocationCode.value = null;
+      selectedMd.value = null;
+      selectedProjectCode.value = null;
+      selectedStatus.value = null;
+      selectedHigherLevel.value = null;
+      applyFilters();
+    }
 
     const currentPageStatus = ref(1);
     const pageSizeStatus = ref(10);
@@ -475,6 +640,7 @@ export default {
       Refresh,
       Delete,
       Plus,
+      Filter,
 
       // Store & State
       langStore,
@@ -489,6 +655,7 @@ export default {
       selectedProjectCode,
       selectedStatus,
       selectedMd,
+      selectedHigherLevel,
       productCodeOptions,
       projectCodeOptions,
       locationOptions,
@@ -498,6 +665,8 @@ export default {
       loadingProjectCode,
       loadingLocaction,
       loadingMD,
+      loadingHigherLF,
+      uniqueHigherLF,
 
       // Filter Functions
       applyFilters,
@@ -508,6 +677,7 @@ export default {
       getInstallationStatusName,
       statusFormatter,
       fetchDataInstallationAndInitialize,
+      remoteSearchHigherLF,
 
       // Actions
       refreshData,
@@ -555,6 +725,8 @@ export default {
       handleDesignUploadSuccess,
       uploadedDesignUrl,
       Cpu,
+      activeFilters,
+      clearAllFilters,
     };
   },
 };
@@ -658,6 +830,7 @@ export default {
   width: 100%;
   height: auto;
   display: flex;
+  /* flex-wrap: wrap; */
   flex-direction: row;
   gap: 10px;
 }
@@ -677,5 +850,16 @@ h4 {
 .items-table {
   display: flex;
   gap: 2px;
+}
+
+.action-filter-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filter-controls {
+  display: flex;
+  align-items: flex-start;
 }
 </style>

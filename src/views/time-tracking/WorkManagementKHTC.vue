@@ -155,7 +155,7 @@
           <template #default="{ row }">
             <el-tag :type="getStatusTagType(row.status)" style="font-weight: bolder;">
               {{ getTranslatedStatusLabel(row.status, taskStatuses) }}
-            </el-tag> 
+            </el-tag>  
           </template>
         </el-table-column>
         <el-table-column prop="site" :label="langStore.t('JobArea')" sortable>
