@@ -22,6 +22,7 @@ export function useWarehouseInstallationPartManagement() {
     const selectedExportId = ref(null);
     const selectedMd = ref(null);
     const selectedStatus = ref(null);
+    const selectedHigherLevel = ref(null);
 
     // State for pagination
     const currentPage = ref(1);
@@ -44,6 +45,9 @@ export function useWarehouseInstallationPartManagement() {
 
     const mdOptions = ref([]);
     const loadingMD = ref(false);
+
+    const higherLFOptions = ref([]);
+    const loadingHigherLF = ref(false);
 
     // Empty data will be to show data status
     const emptyInstallationVal = computed(() => {
@@ -183,7 +187,7 @@ export function useWarehouseInstallationPartManagement() {
                 loadingLocation.value = false;
                 locationOptions.value = uniqueLocation.value.filter((item) => {
                     return item.name.toLowerCase().includes(query.toLowerCase());
-                })
+                })    
             }, 200);
         } else {
             locationOptions.value = '';
@@ -211,12 +215,43 @@ export function useWarehouseInstallationPartManagement() {
             loadingMD.value = true;
             setTimeout(() => {
                 loadingMD.value = false;
-                mdOptions.value = uniqueMD.value.filter((item) =>{
+                mdOptions.value = uniqueMD.value.filter((item) => {
                     return item.name.toLowerCase().includes(query.toLowerCase());
                 })
             }, 200);
         } else {
             mdOptions.value = '';
+        }
+    };
+
+    const uniqueHigherLF = computed(() => {
+        if (!allInstallationItems.value || allInstallationItems.value.length === 0) {
+            return [];
+        }
+
+        const higherLFItem = new Map();
+        allInstallationItems.value.forEach((item) => {
+            const higherLFVal = item.higher_lever_function;
+            if (higherLFVal && !higherLFItem.has(higherLFVal)) {
+                higherLFItem.set(higherLFVal,
+                { id: higherLFVal, name: higherLFVal })
+            }
+        });
+
+        return Array.from(higherLFItem.values());
+    });
+
+    const remoteSearchHigherLF = (query) => {
+        if (query) {
+            loadingHigherLF.value = true;
+            setTimeout(() => {
+                loadingHigherLF.value = false;
+                higherLFOptions.value = uniqueHigherLF.value.filter((item) => {
+                    return item.name.toLowerCase().includes(query.toLowerCase());
+                })
+            }, 200);
+        } else {
+            higherLFOptions.value = '';
         }
     };
 
@@ -239,7 +274,7 @@ export function useWarehouseInstallationPartManagement() {
 
     const applyFilters = () => {
         let tempItems = Array.isArray(allInstallationItems.value) ? [...allInstallationItems.value] : [];
-        console.log('tempItems:' , tempItems);
+        // console.log('tempItems:' , tempItems);
 
         if (selectedProductCode.value) {
             tempItems = tempItems.filter(item => item.part_no === selectedProductCode.value);
@@ -397,6 +432,7 @@ export function useWarehouseInstallationPartManagement() {
         selectedExportId,
         selectedMd,
         selectedStatus,
+        selectedHigherLevel,
         currentPage,
         pageSize,
         dummyItems,
@@ -410,6 +446,8 @@ export function useWarehouseInstallationPartManagement() {
         loadingBrand,
         mdOptions,
         loadingMD,
+        higherLFOptions,
+        loadingHigherLF,
         // Function
         emptyInstallationVal,
         uniqueSeriNumber,
@@ -431,5 +469,7 @@ export function useWarehouseInstallationPartManagement() {
         groupedStatus,
         totalStatusForPagination,
         fetchDataInstallationAndInitialize,
+        uniqueHigherLF,
+        remoteSearchHigherLF,
     }
 }
