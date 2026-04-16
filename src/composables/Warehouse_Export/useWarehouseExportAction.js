@@ -87,6 +87,22 @@ export function useWarehouseExportAction(langStore, fetchDataAndInitialize) {
     };
 
     const saveItem = async (itemData) => {
+        let finalSeriNumber = itemData.seri_number;
+        if (originalItemData.value) {
+            const oldStatus = Number(originalItemData.value.status);
+            const newStatus = Number(itemData.status);
+            if (oldStatus !== newStatus) {
+                const isSeriEmpty = !finalSeriNumber || finalSeriNumber.toString().trim() === "";
+                if (isSeriEmpty) {
+                    if (oldStatus === 1 && newStatus === 0) {
+                        finalSeriNumber = "";
+                    } else if (oldStatus === 0 && newStatus === 1) {
+                        finalSeriNumber = null;
+                    }
+                }
+            }
+        }
+
         const payload = {
             "request_id": `evisor-${Date.now()}`,
             'owner': loggedInUserId,
@@ -98,11 +114,11 @@ export function useWarehouseExportAction(langStore, fetchDataAndInitialize) {
                 "quantity": itemData.quantity || '',
                 "description": itemData.description || '',
                 "part_no": itemData.part_no || '',
-                "seri_number": itemData.seri_number || null,
+                "seri_number": finalSeriNumber,
                 "manufacturer": itemData.manufacturer || '',
                 "project_code": itemData.project_code || '',
                 "cabinet_no": itemData.cabinet_no || '',
-                "status": itemData.status || 0,
+                "status": itemData.status || 1,
                 "higher_lever_function": itemData.higher_lever_function || '',
             },
         };  
