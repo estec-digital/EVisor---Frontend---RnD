@@ -127,6 +127,7 @@
                 border
                 style="width: 100%;"
                 stripe
+                highlight-current-row="true"
                 class="items-table"
                 height="calc(100vh - 321px)"
                 @selection-change="itemSelectionChange"

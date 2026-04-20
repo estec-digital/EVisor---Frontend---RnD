@@ -34,6 +34,9 @@ export function useWarehouseManagementDatas(itemDataByDate) {
     const productCodeOptions = ref([]);
     const loadingProductCode = ref(false);
 
+    const productSeriOptions = ref([]);
+    const loadingProductSeri = ref(false);
+
     // EmptyData will be computed property to show data status
     const emptyData = computed(() => {
         if (isLoading.value || error.value) {
@@ -98,6 +101,20 @@ export function useWarehouseManagementDatas(itemDataByDate) {
             }, 200);
         } else {
             productCodeOptions.value = '';
+        }
+    };
+
+    const remoteSearchProductSeri = (query) => {
+        if (query) {
+            loadingProductSeri.value = true;
+            setTimeout(() => {
+                loadingProductSeri.value = false;
+                productSeriOptions.value = uniqueProductSeriNum.value.filter((item) => {
+                    return item.name.toLowerCase().includes(query.toLowerCase());
+                })
+            }, 200);
+        } else {
+            productSeriOptions.value = '';
         }
     };
 
@@ -281,5 +298,8 @@ export function useWarehouseManagementDatas(itemDataByDate) {
         loadDashboardWithFilters,
         selectedFilterDate,
         selectedDashboardDate,
+        productSeriOptions,
+        loadingProductSeri,
+        remoteSearchProductSeri,
     }
 }
