@@ -23,6 +23,27 @@
       </el-select>
 
       <el-select
+        v-model="localSelectedProductSeri"
+        :placeholder="langStore.t('FilterBySeriNumber')"
+        clearable
+        filterable
+        remote
+        :remote-method="remoteSearchProductSeri"
+        :loading="loadingProductSeri"
+        @change="handleFilterChange"
+        style="width: 100%"
+        class="barcode-select"
+      >
+        <el-option
+          v-for="item in productSeriOptions"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+          style="width: 100%"
+        />
+      </el-select>
+
+      <el-select
         v-model="selectedBrand"
         :placeholder="langStore.t('filterByBrandPlaceholder')"
         clearable
@@ -172,6 +193,10 @@ export default {
       selectedDashboardDate,
       selectedBrand,
       uniqueBrand,
+      selectedProductSeriNum,
+      productSeriOptions,
+      remoteSearchProductSeri,
+      loadingProductSeri,
     } = useWarehouseManagementDatas();
 
     const currentPage = ref(1);
@@ -191,6 +216,11 @@ export default {
     const localSelectedProductCode = computed({
       get: () => selectedProductCode.value,
       set: (val) => (selectedProductCode.value = val),
+    });
+
+    const localSelectedProductSeri = computed({
+      get: () => selectedProductSeriNum.value,
+      set: (val) => (selectedProductSeriNum.value = val),
     });
 
     const handleFilterChange = () => {
@@ -258,6 +288,11 @@ export default {
       EditPen,
       Delete,
       expandedRowKeys,
+      selectedProductSeriNum,
+      productSeriOptions,
+      remoteSearchProductSeri,
+      loadingProductSeri,
+      localSelectedProductSeri,
       // --- Functions ---
       applyFilters,
       remoteSearchProductCode,
